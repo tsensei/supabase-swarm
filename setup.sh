@@ -92,8 +92,15 @@ echo -e "${BLUE}Creating external network...${NC}"
 if docker network ls | grep -q "supabase_overlay"; then
     print_warning "Network 'supabase_overlay' already exists"
 else
-    docker network create supabase_overlay
-    print_status "Created network 'supabase_overlay'"
+    if [ "$MODE" = "swarm" ]; then
+        # Create overlay network for Docker Swarm
+        docker network create --driver overlay supabase_overlay
+        print_status "Created overlay network 'supabase_overlay'"
+    else
+        # Create bridge network for Docker Compose
+        docker network create supabase_overlay
+        print_status "Created bridge network 'supabase_overlay'"
+    fi
 fi
 
 # Create external volumes
