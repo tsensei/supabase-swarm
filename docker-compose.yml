@@ -468,7 +468,7 @@ services:
       interval: 5s
       retries: 3
     volumes:
-      - ${DOCKER_SOCKET_LOCATION}:/var/run/docker.sock:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     configs:
       - source: vector.yml
         target: /etc/vector/vector.yml
