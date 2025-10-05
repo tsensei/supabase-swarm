@@ -217,7 +217,8 @@ echo "1. Edit .env file with your actual values"
 echo "2. Generate required secrets (see warnings above)"
 echo "3. Deploy with:"
 if [ "$MODE" = "swarm" ]; then
-    echo "   docker stack deploy -c docker-compose.yml supabase"
+    echo "   ./deploy-swarm.sh"
+    echo "   (or manually: docker stack deploy -c docker-compose.yml supabase)"
 else
     echo "   docker-compose -f docker-compose.standalone.yml up -d"
 fi

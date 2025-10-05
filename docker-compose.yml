@@ -5,8 +5,6 @@ services:
   studio:
     hostname: studio
     image: supabase/studio:20241106-f29003e_amd64
-    env_file:
-      - .env
     deploy:
       restart_policy:
         condition: any
@@ -46,8 +44,6 @@ services:
     networks:
       - supabase_overlay
     image: kong:2.8.1
-    env_file:
-      - .env
     entrypoint: bash -c 'eval "echo \"$$(cat ~/temp.yml)\"" > ~/kong.yml && /docker-entrypoint.sh kong docker-start'
     deploy:
       restart_policy:
@@ -87,8 +83,6 @@ services:
   auth:
     hostname: auth
     image: supabase/gotrue:v2.167.0
-    env_file:
-      - .env
     deploy:
       restart_policy:
         condition: any
@@ -157,8 +151,6 @@ services:
   rest:
     container_name: supabase-rest
     image: postgrest/postgrest:v12.2.0
-    env_file:
-      - .env
     deploy:
       restart_policy:
         condition: any
@@ -182,8 +174,6 @@ services:
   realtime:
     container_name: realtime-dev.supabase-realtime
     image: supabase/realtime:v2.34.7
-    env_file:
-      - .env
     deploy:
       restart_policy:
         condition: any
@@ -234,8 +224,6 @@ services:
   storage:
     hostname: storage
     image: supabase/storage-api:v1.14.5
-    env_file:
-      - .env
     networks:
       - supabase_overlay
     deploy:
@@ -284,8 +272,6 @@ services:
   imgproxy:
     container_name: supabase-imgproxy
     image: darthsim/imgproxy:v3.8.0
-    env_file:
-      - .env
     networks:
       - supabase_overlay
     deploy:
@@ -312,8 +298,6 @@ services:
   meta:
     hostname: meta
     image: supabase/postgres-meta:v0.84.2
-    env_file:
-      - .env
     deploy:
       restart_policy:
         condition: any
@@ -335,8 +319,6 @@ services:
   functions:
     container_name: supabase-edge-functions
     image: supabase/edge-runtime:v1.66.4
-    env_file:
-      - .env
     deploy:
       restart_policy:
         condition: any
@@ -367,8 +349,6 @@ services:
   analytics:
     container_name: supabase-analytics
     image: supabase/logflare:1.4.0
-    env_file:
-      - .env
     deploy:
       restart_policy:
         condition: any
@@ -404,8 +384,6 @@ services:
     hostname: db
     container_name: supabase-db
     image: supabase/postgres:15.8.1.020
-    env_file:
-      - .env
     deploy:
       restart_policy:
         condition: any
@@ -469,8 +447,6 @@ services:
   vector:
     hostname: vector
     image: timberio/vector:0.28.1-alpine
-    env_file:
-      - .env
     deploy:
       restart_policy:
         condition: any
