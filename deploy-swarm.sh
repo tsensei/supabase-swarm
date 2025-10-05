@@ -43,7 +43,16 @@ print_status "Found .env file"
 # Load environment variables from .env file
 echo -e "${BLUE}Loading environment variables...${NC}"
 set -a  # automatically export all variables
-source .env
+if ! source .env 2>/dev/null; then
+    print_error "Failed to load .env file!"
+    echo "Common issues:"
+    echo "  - Values with spaces must be quoted: VAR=\"value with spaces\""
+    echo "  - No spaces around = sign: VAR=value (not VAR = value)"
+    echo "  - No special characters without quotes"
+    echo ""
+    echo "Please check your .env file and try again."
+    exit 1
+fi
 set +a  # stop automatically exporting
 
 print_status "Environment variables loaded"

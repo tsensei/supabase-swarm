@@ -106,6 +106,11 @@ set -a && source .env && set +a
 docker stack deploy -c docker-compose.yml supabase
 ```
 
+**Important**: Ensure your `.env` file is properly formatted:
+- Values with spaces must be quoted: `VAR="value with spaces"`
+- No spaces around `=` sign: `VAR=value` (not `VAR = value`)
+- No special characters without quotes
+
 ## 🔧 Configuration
 
 ### Required Environment Variables

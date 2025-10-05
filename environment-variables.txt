@@ -41,8 +41,8 @@ SUPABASE_PUBLIC_URL=http://localhost:8000
 # =============================================================================
 # Supabase Studio (Web UI) settings
 
-STUDIO_DEFAULT_ORGANIZATION=Default Organization
-STUDIO_DEFAULT_PROJECT=Default Project
+STUDIO_DEFAULT_ORGANIZATION="Default Organization"
+STUDIO_DEFAULT_PROJECT="Default Project"
 
 # Optional: OpenAI API Key for AI features in Studio
 OPENAI_API_KEY=
