@@ -105,13 +105,13 @@ MAILER_SUBJECTS_INVITE=You have been invited
 # =============================================================================
 # MULTI-FACTOR AUTHENTICATION (MFA)
 # =============================================================================
-# MFA configuration for enhanced security
-
-GOTRUE_MFA_PHONE_OTP_LENGTH=6
-GOTRUE_MFA_PHONE_TEMPLATE=Your code is $${ .Code }
-GOTRUE_MFA_MAX_ENROLLED_FACTORS=10
-GOTRUE_MFA_TOTP_ENROLL_ENABLED=true
-GOTRUE_MFA_TOTP_VERIFY_ENABLED=true
+# MFA configuration disabled to avoid Docker Swarm template issues
+# Uncomment and configure if needed:
+# GOTRUE_MFA_PHONE_OTP_LENGTH=6
+# GOTRUE_MFA_PHONE_TEMPLATE=Your code is {{ .Code }}
+# GOTRUE_MFA_MAX_ENROLLED_FACTORS=10
+# GOTRUE_MFA_TOTP_ENROLL_ENABLED=true
+# GOTRUE_MFA_TOTP_VERIFY_ENABLED=true
 
 # =============================================================================
 # STORAGE CONFIGURATION

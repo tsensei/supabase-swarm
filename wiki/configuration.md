@@ -110,12 +110,13 @@ MAILER_SUBJECTS_INVITE=You have been invited
 ### Multi-Factor Authentication (MFA)
 
 ```bash
-# MFA Configuration
-GOTRUE_MFA_PHONE_OTP_LENGTH=6                    # OTP length for phone MFA
-GOTRUE_MFA_PHONE_TEMPLATE=Your code is $${ .Code } # Phone OTP template (use $${ for Docker Swarm)
-GOTRUE_MFA_MAX_ENROLLED_FACTORS=10              # Max enrolled MFA factors
-GOTRUE_MFA_TOTP_ENROLL_ENABLED=true            # Enable TOTP enrollment
-GOTRUE_MFA_TOTP_VERIFY_ENABLED=true            # Enable TOTP verification
+# MFA Configuration (disabled by default to avoid Docker Swarm template issues)
+# Uncomment and configure if needed:
+# GOTRUE_MFA_PHONE_OTP_LENGTH=6                    # OTP length for phone MFA
+# GOTRUE_MFA_PHONE_TEMPLATE=Your code is {{ .Code }} # Phone OTP template
+# GOTRUE_MFA_MAX_ENROLLED_FACTORS=10              # Max enrolled MFA factors
+# GOTRUE_MFA_TOTP_ENROLL_ENABLED=true            # Enable TOTP enrollment
+# GOTRUE_MFA_TOTP_VERIFY_ENABLED=true            # Enable TOTP verification
 ```
 
 ### Storage Configuration
