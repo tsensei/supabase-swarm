@@ -1,10 +1,11 @@
 #!/bin/bash
 
 # =============================================================================
-# SUPABASE DOCKER COMPOSE SETUP SCRIPT
+# SUPABASE DOCKER SETUP SCRIPT
 # =============================================================================
-# This script initializes all external resources needed for Supabase Docker Compose
-# to work without Portainer. It creates volumes, networks, and configs.
+# This script initializes external resources needed for Supabase Docker deployments.
+# For Docker Compose: Uses existing docker-compose.standalone.yml
+# For Docker Swarm: Creates external volumes, networks, and configs
 #
 # Usage: ./setup.sh [--swarm|--compose]
 # =============================================================================
@@ -34,8 +35,8 @@ while [[ $# -gt 0 ]]; do
       ;;
     -h|--help)
       echo "Usage: $0 [--swarm|--compose]"
-      echo "  --swarm    Setup for Docker Swarm deployment"
-      echo "  --compose  Setup for Docker Compose deployment (default)"
+      echo "  --swarm    Setup for Docker Swarm deployment (creates external resources)"
+      echo "  --compose  Setup for Docker Compose deployment (uses standalone file)"
       exit 0
       ;;
     *)
@@ -157,69 +158,21 @@ if [ "$MODE" = "swarm" ]; then
     done
 fi
 
-# Create alternative docker-compose.yml for non-swarm users
+# Check for standalone compose file for Docker Compose users
 if [ "$MODE" = "compose" ]; then
     echo ""
-    echo -e "${BLUE}Creating docker-compose.override.yml for Docker Compose...${NC}"
+    echo -e "${BLUE}Checking Docker Compose configuration...${NC}"
     
-    cat > docker-compose.override.yml << 'EOF'
-# Docker Compose override file for non-swarm deployments
-# This file converts external volumes, networks, and configs to local ones
-
-version: '3.8'
-
-services:
-  # Override Kong to use local config file instead of external config
-  kong:
-    configs:
-      - source: kong_config
-        target: /home/kong/temp.yml
-    volumes:
-      - ./volumes/api/kong.yml:/home/kong/temp.yml:ro
-
-  # Override database to use local SQL files instead of external configs
-  db:
-    configs: []
-    volumes:
-      - supabase-production-db-data:/var/lib/postgresql/data:Z
-      - supabase-production-db-config:/etc/postgresql-custom
-      - ./volumes/db/logs.sql:/docker-entrypoint-initdb.d/migrations/99-logs.sql:ro
-      - ./volumes/db/realtime.sql:/docker-entrypoint-initdb.d/migrations/99-realtime.sql:ro
-      - ./volumes/db/roles.sql:/docker-entrypoint-initdb.d/init-scripts/99-roles.sql:ro
-      - ./volumes/db/webhooks.sql:/docker-entrypoint-initdb.d/init-scripts/98-webhooks.sql:ro
-      - ./volumes/db/jwt.sql:/docker-entrypoint-initdb.d/init-scripts/99-jwt.sql:ro
-      - ./volumes/db/_supabase.sql:/docker-entrypoint-initdb.d/migrations/97-_supabase.sql:ro
-      - ./volumes/db/pooler.sql:/docker-entrypoint-initdb.d/migrations/99-pooler.sql:ro
-
-  # Override functions to use local files instead of external configs
-  functions:
-    configs: []
-    volumes:
-      - supabase-production-functions-data:/home/deno/functions:Z
-      - ./volumes/functions/main/index.ts:/home/deno/functions/main/index.ts:ro
-
-  # Override vector to use local config file instead of external config
-  vector:
-    configs: []
-    volumes:
-      - ${DOCKER_SOCKET_LOCATION}:/var/run/docker.sock:ro
-      - ./volumes/logs/vector.yml:/etc/vector/vector.yml:ro
-
-# Convert external volumes to local volumes
-volumes:
-  supabase-production-storage-data:
-  supabase-production-functions-data:
-  supabase-production-db-data:
-  supabase-production-db-config:
-
-# Convert external network to local network
-networks:
-  supabase_overlay:
-
-# Remove external configs section (not needed for Docker Compose)
-EOF
-
-    print_status "Created docker-compose.override.yml"
+    if [ -f "docker-compose.standalone.yml" ]; then
+        print_status "Found docker-compose.standalone.yml - ready for Docker Compose deployment"
+        echo ""
+        echo -e "${YELLOW}💡 For Docker Compose deployment, use:${NC}"
+        echo "   docker-compose -f docker-compose.standalone.yml up -d"
+    else
+        print_error "docker-compose.standalone.yml not found!"
+        echo "This file should be included in the repository."
+        exit 1
+    fi
 fi
 
 # Generate secrets if they don't exist
@@ -259,7 +212,7 @@ echo "3. Deploy with:"
 if [ "$MODE" = "swarm" ]; then
     echo "   docker stack deploy -c docker-compose.yml supabase"
 else
-    echo "   docker-compose up -d"
+    echo "   docker-compose -f docker-compose.standalone.yml up -d"
 fi
 echo ""
 echo -e "${BLUE}Access Supabase Studio at:${NC}"
