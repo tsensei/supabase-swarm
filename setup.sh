@@ -209,6 +209,18 @@ if grep -q "SERVICE_ROLE_KEY=your-service-role-key-here" .env; then
     echo "Visit: https://supabase.com/docs/guides/self-hosting/docker#generate-api-keys"
 fi
 
+# Check if S3 credentials are set (critical for production)
+if grep -q "AWS_ACCESS_KEY_ID=your-aws-access-key" .env; then
+    print_warning "AWS_ACCESS_KEY_ID needs to be configured"
+    echo "This Docker Swarm setup uses S3-compatible storage by default"
+    echo "File uploads will fail without proper S3 configuration"
+fi
+
+if grep -q "AWS_SECRET_ACCESS_KEY=your-aws-secret-key" .env; then
+    print_warning "AWS_SECRET_ACCESS_KEY needs to be configured"
+    echo "Get credentials from AWS IAM Console or your S3-compatible provider"
+fi
+
 echo ""
 echo -e "${GREEN}🎉 Setup completed successfully!${NC}"
 echo ""

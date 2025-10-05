@@ -114,9 +114,11 @@ MAILER_SUBJECTS_INVITE=You have been invited
 # GOTRUE_MFA_TOTP_VERIFY_ENABLED=true
 
 # =============================================================================
-# STORAGE CONFIGURATION
+# STORAGE CONFIGURATION (REQUIRED FOR PRODUCTION)
 # =============================================================================
 # File storage settings (S3-compatible)
+# IMPORTANT: This Docker Swarm setup uses S3-compatible storage by default.
+# You MUST configure S3 credentials for file storage to work properly.
 
 # AWS S3 Configuration
 AWS_ACCESS_KEY_ID=your-aws-access-key

@@ -72,6 +72,9 @@ required_vars=(
     "JWT_SECRET"
     "ANON_KEY"
     "SERVICE_ROLE_KEY"
+    "AWS_ACCESS_KEY_ID"
+    "AWS_SECRET_ACCESS_KEY"
+    "AWS_DEFAULT_REGION"
 )
 
 missing_vars=()
@@ -88,6 +91,9 @@ if [ ${#missing_vars[@]} -ne 0 ]; then
     done
     echo ""
     echo "Please set these variables in your .env file"
+    echo ""
+    echo "⚠️  Note: This Docker Swarm setup uses S3-compatible storage by default."
+    echo "   File uploads and storage will fail without proper S3 configuration."
     exit 1
 fi
 

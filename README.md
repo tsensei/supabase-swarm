@@ -12,6 +12,7 @@ If this configuration helped you get Supabase running smoothly, please consider 
 
 - Docker Engine
 - Domain name (optional, for production)
+- S3-compatible storage credentials (required for file storage)
 
 ### Choose Your Deployment Method
 

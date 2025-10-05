@@ -136,7 +136,14 @@ SERVICE_ROLE_KEY=your-service-role-key
 API_EXTERNAL_URL=http://your-domain.com:8000
 SITE_URL=http://your-domain.com:3000
 SUPABASE_PUBLIC_URL=http://your-domain.com:8000
+
+# S3 Storage Configuration (REQUIRED for production)
+AWS_ACCESS_KEY_ID=your-aws-access-key
+AWS_SECRET_ACCESS_KEY=your-aws-secret-key
+AWS_DEFAULT_REGION=us-east-1
 ```
+
+> ⚠️ **Important**: This Docker Swarm setup uses S3-compatible storage by default. You **MUST** configure S3 credentials for file storage to work properly. Without S3 configuration, file uploads and storage will fail.
 
 ### Production Configuration
 
