@@ -27,6 +27,37 @@ docker-compose -f docker-compose.standalone.yml up -d
 ./setup.sh --swarm
 ```
 
+#### Problem: "POSTGRES_PASSWORD not specified" (Docker Swarm)
+
+**Symptoms**:
+- Database service fails to start
+- Error: "Database is uninitialized and superuser password is not specified"
+- Other services fail to connect to database
+
+**Root Cause**: Docker Swarm doesn't support the `env_file` directive that Docker Compose uses.
+
+**Solutions**:
+
+**Use the deployment script (recommended)**:
+```bash
+# The deploy-swarm.sh script handles environment variables properly
+./deploy-swarm.sh
+```
+
+**Manual deployment**:
+```bash
+# Export environment variables before deployment
+set -a && source .env && set +a
+docker stack deploy -c docker-compose.yml supabase
+```
+
+**Verify environment variables are loaded**:
+```bash
+# Check if variables are exported
+echo $POSTGRES_PASSWORD
+echo $JWT_SECRET
+```
+
 **For Portainer users**:
 1. Go to Volumes → Add volume (create all required volumes)
 2. Go to Networks → Add network (create `supabase_overlay`)

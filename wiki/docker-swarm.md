@@ -73,14 +73,37 @@ openssl rand -base64 16
 ### 5. Deploy Supabase Stack
 
 ```bash
-# Deploy the stack
+# Deploy using the automated script (recommended)
+./deploy-swarm.sh
+
+# OR deploy manually (requires environment variables to be exported)
 docker stack deploy -c docker-compose.yml supabase
 
 # Check deployment status
 docker stack services supabase
 
 # View logs
-docker service logs supabase_studio
+docker service logs supabase_db
+```
+
+### About the Deployment Script
+
+The `deploy-swarm.sh` script provides several benefits:
+
+- ✅ **Automatic Environment Loading**: Loads variables from `.env` file
+- ✅ **Validation**: Checks that required variables are set
+- ✅ **Error Handling**: Provides clear error messages
+- ✅ **Swarm Compatibility**: Works properly with Docker Swarm
+- ✅ **User-Friendly**: Clear status messages and next steps
+
+**Manual Deployment**: If you prefer manual deployment, ensure environment variables are exported:
+
+```bash
+# Export all variables from .env file
+set -a && source .env && set +a
+
+# Deploy the stack
+docker stack deploy -c docker-compose.yml supabase
 ```
 
 ## 🔧 Configuration
@@ -188,6 +211,23 @@ docker node rm <node-id>
 ```
 
 ## 🔧 Troubleshooting
+
+### Environment Variable Issues
+
+**Problem**: Services fail with "POSTGRES_PASSWORD not specified" or similar environment variable errors.
+
+**Solution**: Docker Swarm doesn't support the `env_file` directive. Use the provided deployment script:
+
+```bash
+# Use the automated deployment script
+./deploy-swarm.sh
+
+# OR manually export variables before deployment
+set -a && source .env && set +a
+docker stack deploy -c docker-compose.yml supabase
+```
+
+**Why**: Docker Swarm requires environment variables to be exported to the shell environment, unlike Docker Compose which supports `env_file`.
 
 ### Services Not Starting
 1. Check if external resources exist: `docker volume ls`, `docker network ls`, `docker config ls`
