@@ -1,5 +1,9 @@
 # Supabase Self-Hosting with Docker 🚀
 
+<div align="center">
+  <img src="assets/cover.png" alt="Supabase Docker Swarm Cover" width="800">
+</div>
+
 A production-ready Supabase self-hosting configuration that works with Docker Compose, Docker Swarm, and Portainer.
 
 ## ⭐ Love this project?
