@@ -1,0 +1,211 @@
+# =============================================================================
+# SUPABASE DOCKER COMPOSE ENVIRONMENT VARIABLES
+# =============================================================================
+# This file contains all environment variables used by the Supabase Docker Compose setup.
+# Copy this file and fill in the values for your environment.
+#
+# Generation Commands:
+# - JWT Secret: openssl rand -base64 32
+# - API Keys: Generate from Supabase Dashboard or use existing project keys
+# - Database Password: Generate a strong password (min 32 chars recommended)
+# - SMTP Settings: Get from your email provider (Gmail, SendGrid, etc.)
+# - AWS Credentials: Get from AWS IAM Console
+# =============================================================================
+
+# =============================================================================
+# CORE SUPABASE CONFIGURATION
+# =============================================================================
+# These are the essential variables that must be configured for Supabase to work
+
+# Database Configuration
+POSTGRES_HOST=db
+POSTGRES_PORT=5432
+POSTGRES_DB=postgres
+POSTGRES_PASSWORD=your-super-secret-and-long-postgres-password
+
+# JWT Configuration (40 characters for Supabase API key generator)
+JWT_SECRET=your-super-secret-jwt-token-exactly-40-characters-long
+JWT_EXPIRY=3600
+
+# Supabase API Keys (Generate from Supabase Dashboard)
+ANON_KEY=your-anon-key-here
+SERVICE_ROLE_KEY=your-service-role-key-here
+
+# URLs
+API_EXTERNAL_URL=http://localhost:8000
+SITE_URL=http://localhost:3000
+SUPABASE_PUBLIC_URL=http://localhost:8000
+
+# =============================================================================
+# STUDIO CONFIGURATION
+# =============================================================================
+# Supabase Studio (Web UI) settings
+
+STUDIO_DEFAULT_ORGANIZATION=Default Organization
+STUDIO_DEFAULT_PROJECT=Default Project
+
+# Optional: OpenAI API Key for AI features in Studio
+OPENAI_API_KEY=
+
+# =============================================================================
+# AUTHENTICATION & USER MANAGEMENT
+# =============================================================================
+# GoTrue (Authentication service) configuration
+
+# Signup/Signin Settings
+DISABLE_SIGNUP=false
+ENABLE_EMAIL_SIGNUP=true
+ENABLE_PHONE_SIGNUP=false
+ENABLE_ANONYMOUS_USERS=false
+
+# Email Confirmation Settings
+ENABLE_EMAIL_AUTOCONFIRM=false
+ENABLE_PHONE_AUTOCONFIRM=false
+
+# Additional redirect URLs (comma-separated)
+ADDITIONAL_REDIRECT_URLS=
+
+# =============================================================================
+# EMAIL CONFIGURATION (SMTP)
+# =============================================================================
+# Configure your SMTP provider for email notifications
+# Popular providers:
+# - Gmail: smtp.gmail.com:587
+# - SendGrid: smtp.sendgrid.net:587
+# - Mailgun: smtp.mailgun.org:587
+# - AWS SES: email-smtp.us-east-1.amazonaws.com:587
+
+SMTP_ADMIN_EMAIL=noreply@yourdomain.com
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your-email@gmail.com
+SMTP_PASS=your-app-password
+SMTP_SENDER_NAME=Your App Name
+
+# Email Template Paths
+MAILER_URLPATHS_INVITE=/auth/v1/verify
+MAILER_URLPATHS_CONFIRMATION=/auth/v1/verify
+MAILER_URLPATHS_RECOVERY=/auth/v1/verify
+MAILER_URLPATHS_EMAIL_CHANGE=/auth/v1/verify
+
+# Email Templates (HTML content)
+MAILER_TEMPLATES_INVITE=
+MAILER_TEMPLATES_CONFIRMATION=
+MAILER_TEMPLATES_RECOVERY=
+MAILER_TEMPLATES_MAGIC_LINK=
+MAILER_TEMPLATES_EMAIL_CHANGE=
+
+# Email Subjects
+MAILER_SUBJECTS_CONFIRMATION=Confirm your signup
+MAILER_SUBJECTS_RECOVERY=Reset your password
+MAILER_SUBJECTS_MAGIC_LINK=Your magic link
+MAILER_SUBJECTS_EMAIL_CHANGE=Confirm your email change
+MAILER_SUBJECTS_INVITE=You have been invited
+
+# =============================================================================
+# MULTI-FACTOR AUTHENTICATION (MFA)
+# =============================================================================
+# MFA configuration for enhanced security
+
+GOTRUE_MFA_PHONE_OTP_LENGTH=6
+GOTRUE_MFA_PHONE_TEMPLATE=Your code is {{ .Code }}
+GOTRUE_MFA_MAX_ENROLLED_FACTORS=10
+GOTRUE_MFA_TOTP_ENROLL_ENABLED=true
+GOTRUE_MFA_TOTP_VERIFY_ENABLED=true
+
+# =============================================================================
+# STORAGE CONFIGURATION
+# =============================================================================
+# File storage settings (S3-compatible)
+
+# AWS S3 Configuration
+AWS_ACCESS_KEY_ID=your-aws-access-key
+AWS_SECRET_ACCESS_KEY=your-aws-secret-key
+AWS_DEFAULT_REGION=us-east-1
+
+# Image Processing
+IMGPROXY_ENABLE_WEBP_DETECTION=true
+
+# =============================================================================
+# ANALYTICS & LOGGING
+# =============================================================================
+# Logflare configuration for analytics and logging
+
+LOGFLARE_API_KEY=your-logflare-api-key
+
+# =============================================================================
+# API GATEWAY (KONG) CONFIGURATION
+# =============================================================================
+# Kong dashboard access
+
+DASHBOARD_USERNAME=admin
+DASHBOARD_PASSWORD=your-kong-dashboard-password
+
+# =============================================================================
+# EDGE FUNCTIONS
+# =============================================================================
+# Edge Functions configuration
+
+FUNCTIONS_VERIFY_JWT=true
+
+# =============================================================================
+# DATABASE SCHEMAS
+# =============================================================================
+# PostgREST database schemas
+
+PGRST_DB_SCHEMAS=public,storage,graphql_public
+
+# =============================================================================
+# DOCKER CONFIGURATION
+# =============================================================================
+# Docker-specific settings
+
+DOCKER_SOCKET_LOCATION=/var/run/docker.sock
+
+# =============================================================================
+# GENERATION COMMANDS & INSTRUCTIONS
+# =============================================================================
+
+# 1. JWT_SECRET Generation:
+#    For Supabase API key generator: openssl rand -hex 20 (40 characters)
+#    For general use: openssl rand -base64 32
+#
+# 2. Database Password Generation:
+#    openssl rand -base64 32
+#
+# 3. Supabase API Keys:
+#    - Use the official Supabase API key generator: https://supabase.com/docs/guides/self-hosting/docker#generate-api-keys
+#    - Generate a JWT Secret first (40-character random string)
+#    - Use the form on the page to generate both ANON_KEY and SERVICE_ROLE_KEY
+#    - Run the form twice: once for 'anon' key, once for 'service' key
+#    - Store the JWT Secret securely - you'll need it to regenerate keys later
+#
+# 4. SMTP Configuration:
+#    Gmail: Enable 2FA, then generate App Password
+#    SendGrid: Create API key in SendGrid dashboard
+#    Mailgun: Get SMTP credentials from Mailgun dashboard
+#
+# 5. AWS S3 Setup:
+#    - Create S3 bucket
+#    - Create IAM user with S3 permissions
+#    - Generate access keys
+#
+# 6. Logflare API Key:
+#    - Sign up at https://logflare.app
+#    - Create API key in dashboard
+#
+# 7. Kong Dashboard Password:
+#    - Generate strong password: openssl rand -base64 16
+#
+# 8. Email Templates:
+#    - Use Supabase default templates or create custom HTML
+#    - Store as environment variables or in separate files
+#
+# =============================================================================
+# SECURITY NOTES
+# =============================================================================
+# - Never commit this file with real values to version control
+# - Use strong, unique passwords (32+ characters)
+# - Rotate secrets regularly
+# - Use environment-specific values for different deployments
+# - Consider using Docker secrets for production deployments
